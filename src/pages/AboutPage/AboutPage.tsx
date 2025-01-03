@@ -1,17 +1,19 @@
 import React from 'react';
 
 const AboutPage: React.FC = () => {
+  const appVersion = import.meta.env.VITE_APP_VERSION;
+  
   return (
     <div className="h-[calc(100vh-8rem)] w-full p-8 bg-gray-50/10">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-4xl font-bold text-gray-800 mb-6">Acerca de la App</h1>
-        
+
         <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
           <h2 className="text-2xl font-semibold text-gray-700 mb-4">
             Sistema de Gestión de Almacenes
           </h2>
           <p className="text-gray-600 mb-4">
-            Versión 1.0.0
+            Versión {appVersion}
           </p>
           <div className="border-t pt-4">
             <h3 className="text-xl font-semibold text-gray-700 mb-3">

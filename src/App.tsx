@@ -1,24 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import CalendarPage from './pages/CalendarPage/CalendarPage';
+import { Provider, useDispatch  } from 'react-redux';
+import { store, AppDispatch } from './store';
 import HomePage from './pages/HomePage/HomePage';
 import Dashboard from './layout/dashboard/Dashboard';
-import { ProcesTables } from './pages/PricesTables/ProcesTables';
 import AboutPage from './pages/AboutPage/AboutPage';
+import ConfigPage from './pages/ConfigPage/ConfigPage';
+import { fetchObras } from './slices/obrasSlice';
 
 const App: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(fetchObras());
+  }, [dispatch]);
 
   return (
     <Routes>
-      {/* <Route path="/login" element={<Login />} /> */}
       <Route 
         path="/home" 
         element={ <Dashboard />}
       >
         <Route index element={<HomePage />} />
-        <Route path="calendar" element={<CalendarPage />} />
-        <Route path="tablas" element={<ProcesTables />} />
         <Route path="acerca" element={<AboutPage />} />
+        <Route path="config" element={<ConfigPage />} />
       </Route>
       <Route path="/" element={<Navigate to="/home" replace />} />
     </Routes> 
@@ -26,9 +31,11 @@ const App: React.FC = () => {
 };
 
 const AppWrapper: React.FC = () => (
-  <Router>
-    <App />
-  </Router>
+  <Provider store={store}>
+    <Router>
+      <App />
+    </Router>
+  </Provider>
 );
 
 export default AppWrapper;

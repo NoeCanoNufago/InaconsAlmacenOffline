@@ -46,7 +46,6 @@ const Dashboard = () => {
   return (
     <div className="min-w-[100vw-20rem] bg-white/10 h-[calc(100vh-8rem)] w-full">
       <div className="mx-auto p-4">
-        {/* Header */}
 
         {/* Title */}
         <div className="mb-6">

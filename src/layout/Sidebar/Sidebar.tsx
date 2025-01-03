@@ -7,7 +7,7 @@ interface SidebarProps {
   toggleSidebar: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen }) => {
+const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen, toggleSidebar }) => {
   const [isHovered, setIsHovered] = React.useState(false);
 
   const menuItems = [
@@ -28,15 +28,21 @@ const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen }) => {
               shadow-2xl transition-all duration-500 z-40 text-white hover:text-gray-700
               ${isSidebarOpen ? 'w-64' : 'w-0 lg:w-16'}
               ${isHovered && !isSidebarOpen ? 'lg:w-64' : ''}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={() => {
+        setIsHovered(true);
+        toggleSidebar();
+      }}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        toggleSidebar();
+      }}
     >
       <nav className="flex flex-col p-2 h-full overflow-y-auto space-y-1">
         {menuItems.map((item) => (
           <NavLink
             key={item.to}
             to={item.to}
-            end={item.to === "/home"} // Añadir esta línea
+            end={item.to === "/home"}
             className={({ isActive }) =>
               `flex items-center py-3 px-4 rounded-lg transition-all duration-300 ${
                 isActive ? 'bg-blue-50 text-blue-600' : 'text-white-600 hover:bg-gray-50'
@@ -45,7 +51,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen }) => {
           >
             <item.icon className="w-5 h-5 min-w-[1.25rem]" />
             {(isSidebarOpen || isHovered) && (
-              <span className="ml-3 whitespace-nowrap overflow-hidden transition-all duration-300">
+              <span className="ml-3 h-5 whitespace-nowrap overflow-hidden transition-all duration-300">
                 {item.text}
               </span>
             )}

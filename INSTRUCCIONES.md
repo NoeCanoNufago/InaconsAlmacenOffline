@@ -17,19 +17,6 @@ cd almacen-offline
 npm install
 ```
 
-## Estructura del Proyecto
-```
-almacen-offline/
-├── src/
-│   ├── pages/         # Páginas de la aplicación
-│   ├── components/    # Componentes reutilizables
-│   ├── layout/        # Componentes de diseño
-│   └── assets/        # Recursos estáticos
-├── public/
-│   ├── sw.js         # Service Worker
-│   └── icons/        # Iconos PWA
-```
-
 ## Scripts Disponibles
 - `npm run dev` - Inicia el servidor de desarrollo
 - `npm run build` - Construye la aplicación para producción

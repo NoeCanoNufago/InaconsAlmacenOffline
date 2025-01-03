@@ -2,6 +2,9 @@ import React from 'react';
 import { BsGear } from 'react-icons/bs';
 import { FiMenu, FiSearch, FiX } from 'react-icons/fi';
 import { GrNotification } from 'react-icons/gr';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 interface HeaderProps {
   toggleSidebar: () => void;
@@ -11,13 +14,19 @@ interface HeaderProps {
 const logo = '/vite.svg';
 
 const Header: React.FC<HeaderProps> = ({ toggleSidebar, isSidebarOpen }) => {
+  const navigate = useNavigate();
+  const { defaultObra } = useSelector((state: RootState) => state.config);
+  const { obras } = useSelector((state: RootState) => state.obra);
+  
+  const selectedObra = obras.find(obra => obra.id === defaultObra);
+
   return (
     <header className="fixed top-0 left-0 right-0 h-16 bg-gradient-to-r from-gray-800 via-black to-gray-700 z-50 shadow-lg">
       <div className="h-full mx-auto">
         <div className="flex items-center justify-between h-full px-6">
-          <div className="flex items-center space-x-8 ">
-            <button 
-              onClick={toggleSidebar} 
+          <div className="flex items-center space-x-8">
+            <button
+              onClick={toggleSidebar}
               className="text-white hover:text-blue-600 transition-colors duration-200"
               aria-label={isSidebarOpen ? "Cerrar menú" : "Abrir menú"}
             >
@@ -28,6 +37,13 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar, isSidebarOpen }) => {
               )}
             </button>
             <img src={logo} alt="Logo" className="h-10" />
+            
+            {/* Información de la obra */}
+            {selectedObra && (
+              <div className="text-white">
+                <span>{selectedObra.nombre}</span>
+              </div>
+            )}
           </div>
 
           <div className="flex items-center space-x-6">
@@ -47,7 +63,10 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar, isSidebarOpen }) => {
               </span>
             </button>
 
-            <button className="text-white hover:text-black transition-colors duration-200">
+            <button
+              className="text-white hover:text-black transition-colors duration-200"
+              onClick={() => navigate('/home/config')}
+            >
               <BsGear className="w-6 h-6" />
             </button>
           </div>

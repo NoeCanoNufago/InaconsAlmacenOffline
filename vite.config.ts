@@ -2,7 +2,6 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [
     react(),
@@ -15,27 +14,14 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,gif}'],
         runtimeCaching: [
           {
-            urlPattern: /^https:\/\/pokeapi\.co\/api\/v2\/.*/i,
-            handler: 'CacheFirst',
+            urlPattern: /^https:\/\/inacons-.*\.herokuapp\.com\/graphql/,
+            handler: 'NetworkFirst',
             options: {
-              cacheName: 'pokeapi-cache',
+              cacheName: 'api-cache',
+              networkTimeoutSeconds: 10,
               expiration: {
-                maxEntries: 200,
-                maxAgeSeconds: 30 * 24 * 60 * 60 // 30 días
-              },
-              cacheableResponse: {
-                statuses: [0, 200]
-              }
-            }
-          },
-          {
-            urlPattern: /^https:\/\/raw\.githubusercontent\.com\/.*/i,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'pokemon-images-cache',
-              expiration: {
-                maxEntries: 200,
-                maxAgeSeconds: 30 * 24 * 60 * 60 // 30 días
+                maxEntries: 50,
+                maxAgeSeconds: 7 * 24 * 60 * 60 // 1 semana
               },
               cacheableResponse: {
                 statuses: [0, 200]
