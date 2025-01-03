@@ -1,8 +1,11 @@
 import React from 'react';
+import { RootState } from '../../store';
+import { useSelector } from 'react-redux';
 
 const AboutPage: React.FC = () => {
   const appVersion = import.meta.env.VITE_APP_VERSION;
-  
+  const { recursos } = useSelector((state: RootState) => state.recurso);
+  console.log(recursos);
   return (
     <div className="h-[calc(100vh-8rem)] w-full p-8 bg-gray-50/10">
       <div className="max-w-4xl mx-auto">

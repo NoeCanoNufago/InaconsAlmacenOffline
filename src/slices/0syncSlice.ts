@@ -1,4 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { RootState } from '../store';
+import { fetchObras } from './obrasSlice';
+import { fetchRecursos } from './recursoSlice';
+import { fetchUsuariosAndCargos } from './usuarioSlice';
+import { fetchObraBodegasByObraId } from './obraBodegaSlice';
+import { fetchRecursosBodegaByObra } from './obraBodegaRecursoSlice';
 
 interface SyncState {
   isSyncing: boolean;
@@ -14,39 +20,27 @@ const initialState: SyncState = {
 
 export const syncData = createAsyncThunk(
   'sync/syncData',
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await fetch(import.meta.env.VITE_GRAPHQL_URI, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          query: `
-            query GetAllData {
-              obras {
-                id
-                nombre
-                descripcion
-                ubicacion
-                direccion
-                estado
-                tipo_id {
-                  id
-                  nombre
-                }
-              }
-              # Aquí puedes agregar más queries para otros datos necesarios
-            }
-          `
-        })
-      });
+  async (_, { dispatch, getState }) => {
+    // Obtener defaultObra del estado
+    const state = getState() as RootState;
+    const defaultObra = state.config.defaultObra;
 
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return rejectWithValue(error instanceof Error ? error.message : 'Error de sincronización');
+    // Ejecutar consultas base en paralelo
+    await Promise.all([
+      dispatch(fetchObras()),
+      dispatch(fetchRecursos()),
+      dispatch(fetchUsuariosAndCargos())
+    ]);
+
+    // Si hay una obra por defecto, ejecutar las consultas adicionales
+    if (defaultObra) {
+      await Promise.all([
+        dispatch(fetchObraBodegasByObraId(defaultObra)),
+        dispatch(fetchRecursosBodegaByObra(defaultObra))
+      ]);
     }
+
+    return new Date().toISOString();
   }
 );
 
@@ -60,15 +54,15 @@ const syncSlice = createSlice({
         state.isSyncing = true;
         state.error = null;
       })
-      .addCase(syncData.fulfilled, (state) => {
+      .addCase(syncData.fulfilled, (state, action) => {
         state.isSyncing = false;
-        const now = new Date().toISOString();
+        const now = action.payload;
         state.lastSync = now;
         localStorage.setItem('lastSync', now);
       })
       .addCase(syncData.rejected, (state, action) => {
         state.isSyncing = false;
-        state.error = action.payload as string;
+        state.error = action.error.message ?? null;
       });
   }
 });

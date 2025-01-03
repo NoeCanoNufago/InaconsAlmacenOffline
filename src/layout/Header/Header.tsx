@@ -17,7 +17,7 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar, isSidebarOpen }) => {
   const navigate = useNavigate();
   const { defaultObra } = useSelector((state: RootState) => state.config);
   const { obras } = useSelector((state: RootState) => state.obra);
-  
+
   const selectedObra = obras.find(obra => obra.id === defaultObra);
 
   return (
@@ -37,16 +37,18 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar, isSidebarOpen }) => {
               )}
             </button>
             <img src={logo} alt="Logo" className="h-10" />
-            
+
+          </div>
             {/* Información de la obra */}
             {selectedObra && (
-              <div className="text-white">
-                <span>{selectedObra.nombre}</span>
+              <div className="px-4 py-1 bg-gradient-to-r from-gray-900 to-gray-800 rounded-lg border border-gray-700 shadow-lg hover:border-blue-500 transition-all duration-300 min-w-[200px] w-56">
+              <div className="text-white flex flex-col w-full">
+                <span className="text-[0.5rem] uppercase tracking-wider text-gray-400 text-left w-full">Obra actual</span>
+                <p className="font-semibold text-white/90 hover:text-white text-right w-full">{selectedObra.nombre}</p>
+              </div>
               </div>
             )}
-          </div>
 
-          <div className="flex items-center space-x-6">
             <div className="relative group">
               <input
                 type="text"
@@ -55,6 +57,7 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar, isSidebarOpen }) => {
               />
               <FiSearch className="absolute right-4 top-2.5 text-gray-400 group-hover:text-blue-500 transition-colors duration-200" />
             </div>
+          <div className="flex items-center space-x-6">
 
             <button className="relative text-white hover:text-black transition-colors duration-200">
               <GrNotification className="w-6 h-6" />

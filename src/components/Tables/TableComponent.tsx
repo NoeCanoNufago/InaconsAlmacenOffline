@@ -13,7 +13,7 @@ import {
   ColumnFiltersState,
   Header,
 } from '@tanstack/react-table';
-import backImage from '../../assets/bgmedia.webp'
+import backImage from '../../../public/images/bgmedia.webp';
 
 type TableRow = Record<string, string | number | boolean | ReactNode>;
 

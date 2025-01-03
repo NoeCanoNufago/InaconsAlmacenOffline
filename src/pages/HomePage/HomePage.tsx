@@ -10,37 +10,47 @@ import {
   FiClipboard,
 } from 'react-icons/fi';
 import { WaveBackground } from '../../components/WaveBackground/WaveBackground';
+import { useNavigate } from 'react-router-dom';
 
 interface MenuItemProps {
   title: string;
   icon: React.ReactNode;
+  to: string;
+  notifications?: number;
 }
 
-const MenuItem: React.FC<MenuItemProps & { notifications?: number }> = ({ title, icon, notifications }) => (
-  <div className="flex flex-col items-center justify-center relative bg-transparent rounded-lg p-4 text-white cursor-pointer transition-all duration-300 h-32 min-w-full">
-    <WaveBackground />
-    <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
-      {(notifications ?? 0) > 0 && (
-        <div className="absolute -top-2 -right-2 bg-yellow-500 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
-          {notifications}
-        </div>
-      )}
-      <div className="text-3xl mb-2">{icon}</div>
-      <span className="text-sm text-center">{title}</span>
+const MenuItem: React.FC<MenuItemProps> = ({ title, icon, notifications, to }) => {
+  const navigate = useNavigate();
+  
+  return (
+    <div 
+      onClick={() => navigate(to)}
+      className="flex flex-col items-center justify-center relative bg-transparent rounded-lg p-4 text-white cursor-pointer transition-all duration-300 h-32 min-w-full hover:scale-105"
+    >
+      <WaveBackground />
+      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
+        {(notifications ?? 0) > 0 && (
+          <div className="absolute -top-2 -right-2 bg-yellow-500 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
+            {notifications}
+          </div>
+        )}
+        <div className="text-3xl mb-2">{icon}</div>
+        <span className="text-sm text-center">{title}</span>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const Dashboard = () => {
   const menuItems = [
     { title: 'Movimientos', icon: <FiBox />, notifications: 0, to: '/home/movimientos' },
-    { title: 'Acerca de', icon: <FiInfo />, notifications: 1, to: '/home/acerca' },
+    { title: 'Inventarios', icon: <FiClipboard />, notifications: 2, to: '/home/inventarios' },
+    { title: 'Stock', icon: <FiDatabase />, notifications: 2, to: '/home/stock' },
     { title: 'Recepción', icon: <FiTruck />, notifications: 2, to: '/home/recepcion' },
     { title: 'Ubicaciones', icon: <FiMap />, notifications: 2, to: '/home/ubicaciones' },
     { title: 'Picking', icon: <FiShoppingCart />, notifications: 2, to: '/home/picking' },
     { title: 'Packing', icon: <FiPackage />, notifications: 2, to: '/home/packing' },
-    { title: 'Stock', icon: <FiDatabase />, notifications: 2, to: '/home/stock' },
-    { title: 'Inventarios', icon: <FiClipboard />, notifications: 2, to: '/home/inventarios' },
+    { title: 'Acerca de', icon: <FiInfo />, notifications: 0, to: '/home/acerca' },
   ];
 
   return (

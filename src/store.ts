@@ -4,6 +4,8 @@ import { obraReducer } from './slices/obrasSlice';
 import { syncReducer } from './slices/0syncSlice';
 import { recursoReducer } from './slices/recursoSlice';
 import { usuarioReducer } from './slices/usuarioSlice';
+import { obraBodegaReducer } from './slices/obraBodegaSlice';
+import { obraBodegaRecursoReducer } from './slices/obraBodegaRecursoSlice';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +14,8 @@ export const store = configureStore({
     sync: syncReducer,
     recurso: recursoReducer,
     usuario: usuarioReducer,
+    obraBodega: obraBodegaReducer,
+    obraBodegaRecurso: obraBodegaRecursoReducer,
   },
 });
 

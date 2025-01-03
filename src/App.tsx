@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage/HomePage';
 import Dashboard from './layout/dashboard/Dashboard';
 import AboutPage from './pages/AboutPage/AboutPage';
 import ConfigPage from './pages/ConfigPage/ConfigPage';
+import StockPage from './pages/StockPage/StockPage';
 import { fetchObras } from './slices/obrasSlice';
 
 const App: React.FC = () => {
@@ -24,6 +25,7 @@ const App: React.FC = () => {
         <Route index element={<HomePage />} />
         <Route path="acerca" element={<AboutPage />} />
         <Route path="config" element={<ConfigPage />} />
+        <Route path="stock" element={<StockPage />} />
       </Route>
       <Route path="/" element={<Navigate to="/home" replace />} />
     </Routes> 
